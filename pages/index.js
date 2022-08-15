@@ -12,14 +12,21 @@ export default function Home() {
 	}
 
 	useEffect(() => {
+		const themeState = localStorage.getItem('theme')
+		if (themeState) setThemeToggle(true)
+	}, [])
+
+	useEffect(() => {
 		if (themeToggle) {
 			document.body.classList.add('dark')
 			document.getElementById('title').classList.add('dark')
 			document.getElementById('addTextCode').classList.add('dark')
+			localStorage.setItem('theme', 'dark')
 		} else {
 			document.body.classList.remove('dark')
 			document.getElementById('title').classList.remove('dark')
 			document.getElementById('addTextCode').classList.remove('dark')
+			localStorage.removeItem('theme')
 		}
 	}, [themeToggle])
 
