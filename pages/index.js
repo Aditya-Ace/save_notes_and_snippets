@@ -23,7 +23,9 @@ export default function Home() {
 
 	useEffect(() => {
 		const themeState = localStorage.getItem('theme')
+		const textTypeState = localStorage.getItem('textType')
 		if (themeState) setThemeToggle(true)
+		if (textTypeState) setTextType(textTypeState)
 	}, [])
 
 	useEffect(() => {
@@ -65,7 +67,7 @@ export default function Home() {
 					>
 						dark_mode
 					</span>
-					<select id='textType' onChange={handleSelectChange}>
+					<select id='textType' onChange={handleSelectChange} value={textType}>
 						<option value='text'>Text</option>
 						<option value='code'>Code</option>
 					</select>
