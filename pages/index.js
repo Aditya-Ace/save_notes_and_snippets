@@ -6,7 +6,7 @@ import styles from '../styles/Home.module.css'
 export default function Home() {
 	const [userCode, setUserCode] = useState('')
 	const [themeToggle, setThemeToggle] = useState(false)
-	const [textType, setTextType] = useState('')
+	const [textType, setTextType] = useState('text')
 
 	const toggleTheme = () => {
 		setThemeToggle(!themeToggle)
@@ -18,14 +18,18 @@ export default function Home() {
 	}
 
 	const handleSaveUserInput = (e) => {
-		console.log(e.target.value)
+		localStorage.setItem('userCode', e.target.value)
+		localStorage.setItem('textType', textType)
+		setUserCode(e.target.value)
 	}
 
 	useEffect(() => {
 		const themeState = localStorage.getItem('theme')
 		const textTypeState = localStorage.getItem('textType')
+		const userCodeText = localStorage.getItem('userCode')
 		if (themeState) setThemeToggle(true)
 		if (textTypeState) setTextType(textTypeState)
+		if (userCodeText) setUserCode(userCodeText)
 	}, [])
 
 	useEffect(() => {
@@ -78,8 +82,7 @@ export default function Home() {
 					cols='60'
 					rows='10'
 					placeholder='Enter your code or text here'
-					onChange={(e) => setUserCode(e.target.value)}
-					value-={userCode}
+					defaultValue={userCode}
 					className={styles.textarea}
 					autoComplete='off'
 					autoCorrect='on'
