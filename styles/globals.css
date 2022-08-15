@@ -57,7 +57,11 @@ body {
 	text-rendering: optimizeSpeed;
 	line-height: 1.5;
 	font-family: var(--font-body);
+}
+
+.dark {
 	background-color: var(--color-dark);
+	color: var(--color-light);
 }
 
 /* A elements that don't have a class get default styles */
@@ -71,6 +75,11 @@ picture,
 svg {
 	max-width: 100%;
 	display: block;
+}
+
+.themeIcon {
+	cursor: pointer;
+	user-select: none;
 }
 
 /* Update the styles based on the screen sizes */

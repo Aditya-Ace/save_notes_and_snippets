@@ -1,10 +1,28 @@
+import 'material-icons/iconfont/material-icons.css'
 import Head from 'next/head'
-import Image from 'next/image'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styles from '../styles/Home.module.css'
 
 export default function Home() {
 	const [userCode, setUserCode] = useState('')
+	const [themeToggle, setThemeToggle] = useState(false)
+
+	const toggleTheme = () => {
+		setThemeToggle(!themeToggle)
+	}
+
+	useEffect(() => {
+		if (themeToggle) {
+			document.body.classList.add('dark')
+			document.getElementById('title').classList.add('dark')
+			document.getElementById('addTextCode').classList.add('dark')
+		} else {
+			document.body.classList.remove('dark')
+			document.getElementById('title').classList.remove('dark')
+			document.getElementById('addTextCode').classList.remove('dark')
+		}
+	}, [themeToggle])
+
 	return (
 		<div className={styles.container}>
 			<Head>
@@ -14,7 +32,21 @@ export default function Home() {
 			</Head>
 
 			<main className={styles.main}>
-				<h1 className={styles.title}>Save Text Code Snippets</h1>
+				<h1 className={styles.title} id='title'>
+					Save Text Code Snippets
+				</h1>
+				<section>
+					<span
+						className={
+							themeToggle
+								? 'material-icons-outlined themeIcon'
+								: 'material-icons themeIcon'
+						}
+						onClick={toggleTheme}
+					>
+						dark_mode
+					</span>
+				</section>
 				<textarea
 					name='addTextCode'
 					id='addTextCode'
