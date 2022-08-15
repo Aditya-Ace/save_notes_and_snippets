@@ -6,9 +6,19 @@ import styles from '../styles/Home.module.css'
 export default function Home() {
 	const [userCode, setUserCode] = useState('')
 	const [themeToggle, setThemeToggle] = useState(false)
+	const [textType, setTextType] = useState('')
 
 	const toggleTheme = () => {
 		setThemeToggle(!themeToggle)
+	}
+
+	const handleSelectChange = (e) => {
+		localStorage.setItem('textType', e.target.value)
+		setTextType(e.target.value)
+	}
+
+	const handleSaveUserInput = (e) => {
+		console.log(e.target.value)
 	}
 
 	useEffect(() => {
@@ -21,11 +31,13 @@ export default function Home() {
 			document.body.classList.add('dark')
 			document.getElementById('title').classList.add('dark')
 			document.getElementById('addTextCode').classList.add('dark')
+			document.getElementById('textType').classList.add('dark')
 			localStorage.setItem('theme', 'dark')
 		} else {
 			document.body.classList.remove('dark')
 			document.getElementById('title').classList.remove('dark')
 			document.getElementById('addTextCode').classList.remove('dark')
+			document.getElementById('textType').classList.remove('dark')
 			localStorage.removeItem('theme')
 		}
 	}, [themeToggle])
@@ -42,7 +54,7 @@ export default function Home() {
 				<h1 className={styles.title} id='title'>
 					Save Text Code Snippets
 				</h1>
-				<section>
+				<section className={styles.toolKit_wrapper}>
 					<span
 						className={
 							themeToggle
@@ -53,6 +65,10 @@ export default function Home() {
 					>
 						dark_mode
 					</span>
+					<select id='textType' onChange={handleSelectChange}>
+						<option value='text'>Text</option>
+						<option value='code'>Code</option>
+					</select>
 				</section>
 				<textarea
 					name='addTextCode'
@@ -63,6 +79,9 @@ export default function Home() {
 					onChange={(e) => setUserCode(e.target.value)}
 					value-={userCode}
 					className={styles.textarea}
+					autoComplete='off'
+					autoCorrect='on'
+					onBlur={handleSaveUserInput}
 				></textarea>
 			</main>
 		</div>
