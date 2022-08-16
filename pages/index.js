@@ -62,11 +62,8 @@ export default function Home() {
 				</h1>
 				<section className={styles.toolKit_wrapper}>
 					<span
-						className={
-							themeToggle
-								? 'material-icons-outlined themeIcon'
-								: 'material-icons themeIcon'
-						}
+						className={`${styles.themeIcon}
+						 material-icons${themeToggle ? '-outlined' : ''}`}
 						onClick={toggleTheme}
 					>
 						dark_mode

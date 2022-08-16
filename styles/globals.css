@@ -76,12 +76,6 @@ svg {
 	max-width: 100%;
 	display: block;
 }
-
-.themeIcon {
-	cursor: pointer;
-	user-select: none;
-}
-
 /* Update the styles based on the screen sizes */
 @media (min-width: 768px) {
 	:root {
