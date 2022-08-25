@@ -1,13 +1,19 @@
 import 'material-icons/iconfont/material-icons.css'
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
+import localForage from 'localforage'
+import randomString from 'random-string'
+
 import styles from '../styles/Home.module.css'
 
 export default function Home() {
 	const [userCode, setUserCode] = useState('')
 	const [themeToggle, setThemeToggle] = useState(false)
 	const [textType, setTextType] = useState('text')
-
+	const [userId, setUserId] = useState('')
+	const [error, setError] = useState('')
+	const [success, setSuccess] = useState('')
+	const [search, setSearch] = useState('')
 	const toggleTheme = () => {
 		setThemeToggle(!themeToggle)
 	}
@@ -17,10 +23,52 @@ export default function Home() {
 		setTextType(e.target.value)
 	}
 
-	const handleSaveUserInput = (e) => {
-		localStorage.setItem('userCode', e.target.value)
-		localStorage.setItem('textType', textType)
-		setUserCode(e.target.value)
+	const handleSaveUserInput = async (e) => {
+		try {
+			setUserId('')
+			setSearch('')
+			if (userCode !== '') {
+				const userNote = {
+					userCode,
+					textType
+				}
+				const key =
+					userNote.userCode.slice(0, 1) +
+					userNote.textType +
+					randomString({ length: 5 })
+				setUserId(key)
+				await localForage.setItem(key, userNote)
+				setUserCode('')
+				setSuccess('Saved!')
+			}
+		} catch (error) {
+			console.error(error)
+			setError('Error saving note')
+		}
+	}
+
+	const handleFindNote = async (e) => {
+		try {
+			if (e.key === 'Enter' && e.target.value.length !== '') {
+				const data = await localForage.getItem(e.target.value)
+				if (!data) {
+					return setError('No note found with that Id')
+				}
+				setTextType(data.textType)
+				setUserCode(data.userCode)
+				setSearch('')
+				setUserId('')
+				setSuccess('Note found')
+			}
+		} catch (error) {
+			console.error(error)
+			setError('No note found with that Id')
+		}
+	}
+
+	const handleCopyToClipboard = () => {
+		navigator.clipboard.writeText(userId)
+		setSuccess('Copied to clipboard')
 	}
 
 	useEffect(() => {
@@ -38,15 +86,33 @@ export default function Home() {
 			document.getElementById('title').classList.add('dark')
 			document.getElementById('addTextCode').classList.add('dark')
 			document.getElementById('textType').classList.add('dark')
+			document.getElementById('nodeId').classList.add('dark')
+			document.getElementById('pushBtn').classList.add('dark')
 			localStorage.setItem('theme', 'dark')
 		} else {
 			document.body.classList.remove('dark')
 			document.getElementById('title').classList.remove('dark')
 			document.getElementById('addTextCode').classList.remove('dark')
 			document.getElementById('textType').classList.remove('dark')
+			document.getElementById('nodeId').classList.remove('dark')
+			document.getElementById('pushBtn').classList.remove('dark')
 			localStorage.removeItem('theme')
 		}
 	}, [themeToggle])
+
+	useEffect(() => {
+		setTimeout(() => {
+			setError('')
+			setSearch('')
+		}, 4000)
+	}, [error])
+
+	useEffect(() => {
+		setTimeout(() => {
+			setSuccess('')
+			setSearch('')
+		}, 4000)
+	}, [success])
 
 	return (
 		<div className={styles.container}>
@@ -60,6 +126,21 @@ export default function Home() {
 				<h1 className={styles.title} id='title'>
 					Save Text Code Snippets
 				</h1>
+				{userId && (
+					<h5 id='title'>
+						Save it somewhere to access it later
+						<span className={styles.userDisplayId}>
+							{userId}
+							<span
+								className={`${styles.copyIcon}
+						 material-icons${themeToggle ? '-outlined' : ''}`}
+								onClick={handleCopyToClipboard}
+							>
+								file_copy
+							</span>
+						</span>
+					</h5>
+				)}
 				<section className={styles.toolKit_wrapper}>
 					<span
 						className={`${styles.themeIcon}
@@ -68,23 +149,51 @@ export default function Home() {
 					>
 						dark_mode
 					</span>
-					<select id='textType' onChange={handleSelectChange} value={textType}>
+					<select
+						id='textType'
+						onChange={handleSelectChange}
+						value={textType}
+						className={styles.select}
+					>
 						<option value='text'>Text</option>
 						<option value='code'>Code</option>
 					</select>
 				</section>
+				<section>
+					<div className={styles.noteSearchBox}>
+						<input
+							type='text'
+							name='noteId'
+							id='nodeId'
+							placeholder='Enter your Note ID here...'
+							onKeyDown={handleFindNote}
+							value={search}
+							onChange={(e) => setSearch(e.target.value)}
+						/>
+					</div>
+				</section>
+				{error && <h5 className={styles.error}>{error}</h5>}
+				{success && <h5 className={styles.success}>{success}</h5>}
 				<textarea
 					name='addTextCode'
 					id='addTextCode'
 					cols='60'
 					rows='10'
 					placeholder='Enter your code or text here'
-					defaultValue={userCode}
+					value={userCode}
 					className={styles.textarea}
 					autoComplete='off'
 					autoCorrect='on'
-					onBlur={handleSaveUserInput}
+					onChange={(e) => setUserCode(e.target.value)}
 				></textarea>
+				<button
+					className={styles.button}
+					name='pushBtn'
+					id='pushBtn'
+					onClick={handleSaveUserInput}
+				>
+					Push Inn
+				</button>
 			</main>
 		</div>
 	)

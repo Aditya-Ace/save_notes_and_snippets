@@ -36,6 +36,12 @@
 	font: inherit;
 }
 
+::-webkit-scrollbar {
+	width: 0.5rem;
+	height: 0.5rem;
+	color: #000;
+}
+
 /* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
 ul[role='list'],
 ol[role='list'] {
