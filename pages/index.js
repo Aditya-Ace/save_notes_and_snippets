@@ -195,6 +195,10 @@ export default function Home() {
 					Push Inn
 				</button>
 			</main>
+			<footer className={styles.footer}>
+				<h5>Made in ❤️ with JS React Next & Vercel</h5>
+				<blockquote>Aditya 2022 - Infinity</blockquote>
+			</footer>
 		</div>
 	)
 }

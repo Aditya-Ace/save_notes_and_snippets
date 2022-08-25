@@ -138,3 +138,12 @@
 	font-size: 1.5rem;
 	resize: none;
 }
+
+.footer {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	gap: 2rem;
+	background-color: #111;
+}
