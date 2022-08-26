@@ -49,7 +49,7 @@ export default function Home() {
 
 	const handleFindNote = async (e) => {
 		try {
-			if ((e.key === 'Enter' || e.keyCode === 13) && e.target.value !== '') {
+			if (e.target.value !== '') {
 				const data = await localForage.getItem(e.target.value)
 				if (!data) {
 					return setError('No note found with that Id')
@@ -157,7 +157,6 @@ export default function Home() {
 							name='noteId'
 							id='nodeId'
 							placeholder='Enter your Note ID here...'
-							onKeyDown={handleFindNote}
 							onBlur={handleFindNote}
 							value={search}
 							onChange={(e) => setSearch(e.target.value)}
