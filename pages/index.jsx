@@ -158,11 +158,9 @@ export default function Home() {
 							id='nodeId'
 							placeholder='Enter your Note ID here...'
 							onKeyDown={handleFindNote}
+							onBlur={handleFindNote}
 							value={search}
-							onChange={(e) => {
-								e.preventDefault()
-								setSearch(e.target.value)
-							}}
+							onChange={(e) => setSearch(e.target.value)}
 						/>
 					</div>
 				</section>
