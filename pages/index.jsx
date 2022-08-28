@@ -173,7 +173,7 @@ export default function Home() {
 						<option value='text'>Text</option>
 						<option value='code'>Code</option>
 					</select>
-					<div>
+					<div className={styles.messageContainer}>
 						{error && <h5 className={styles.error}>{error}</h5>}
 						{success && <h5 className={styles.success}>{success}</h5>}
 					</div>

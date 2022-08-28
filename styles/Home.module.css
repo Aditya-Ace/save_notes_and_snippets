@@ -33,7 +33,7 @@
 	align-items: center;
 }
 
-.toolKit_wrapper select {
+.toolKit_wrapper .select {
 	width: 10rem;
 	text-align: center;
 	font-size: 1.5rem;
@@ -43,7 +43,7 @@
 	text-align: center;
 }
 
-.toolKit_wrapper select:active {
+.toolKit_wrapper .select:active {
 	border: 1px solid #000;
 }
 
@@ -68,6 +68,21 @@
 	align-items: center;
 	text-align: center;
 	margin-left: 3rem;
+}
+
+.messageContainer {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
+}
+
+@media screen and (max-width: 768px) {
+	.messageContainer {
+		flex-direction: column;
+		font-size: 1rem;
+	}
 }
 
 .textarea {
@@ -118,7 +133,6 @@
 }
 
 .button:active {
-/* 	transform: scale(0.98); */
 	transform: translateX(0.1rem);
 	box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
 }
